@@ -1,137 +1,69 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PDF Viewer — View Only</title>
-  <link rel="stylesheet" href="style.css"/>
-  <!-- PDF.js CDN (mozilla) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.120/pdf.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📚 My PDF Library</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top, #000814, #001933 70%);
+      color: #e6f1ff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px 0;
+      font-size: 26px;
+      letter-spacing: 1px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 10px #001233;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 15px;
+      padding: 20px;
+      transition: 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .card:hover {
+      background: #0077ff33;
+      transform: translateY(-5px);
+    }
+
+    footer {
+      padding: 15px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      color: #aaa;
+    }
+  </style>
 </head>
 <body>
-  <div id="topbar">
-    <h1>PDF Viewer</h1>
-    <div id="controls">
-      <button id="prev">पिछला</button>
-      <span id="page-info">—</span>
-      <button id="next">अगला</button>
-      <select id="zoom">
-        <option value="1">100%</option>
-        <option value="1.25">125%</option>
-        <option value="1.5">150%</option>
-      </select>
-    </div>
+  <header>📖 My PDF Library</header>
+
+  <div class="grid">
+    <a href="viewer.html?file=physics1.pdf" class="card">⚡ Physics Notes</a>
+    <a href="viewer.html?file=chemistry1.pdf" class="card">🧪 Chemistry Notes</a>
+    <a href="viewer.html?file=biology1.pdf" class="card">🌿 Biology Notes</a>
+    <a href="viewer.html?file=notes.pdf" class="card">📘 General Notes</a>
   </div>
 
-  <div id="viewerContainer">
-    <!-- canvases will be appended here -->
-  </div>
-
-  <!-- transparent overlay to deter right-click on canvas -->
-  <div id="anti-save-overlay" aria-hidden="true"></div>
-
-  <script>
-  // CONFIG: यहाँ अपनी PDF का raw.githubusercontent URL डालो
-  // Example: https://raw.githubusercontent.com/<username>/<repo>/main/pdfs/sample.pdf
-  const PDF_URL = "https://raw.githubusercontent.com/<USERNAME>/<REPO>/main/pdfs/sample.pdf";
-
-  // PDF.js setup
-  const CMAP_URL = null;
-
-  const loadingTask = pdfjsLib.getDocument({ url: PDF_URL, cMapUrl: CMAP_URL });
-  let pdfDoc = null;
-  let currentPage = 1;
-  let scale = 1.0;
-
-  const viewerContainer = document.getElementById('viewerContainer');
-  const pageInfo = document.getElementById('page-info');
-  const prevBtn = document.getElementById('prev');
-  const nextBtn = document.getElementById('next');
-  const zoomSel = document.getElementById('zoom');
-
-  // Disable right-click on whole page
-  document.addEventListener('contextmenu', e => e.preventDefault());
-
-  // Disable text selection
-  document.addEventListener('selectstart', e => e.preventDefault());
-
-  // fetch and render
-  loadingTask.promise.then(function(pdf) {
-    pdfDoc = pdf;
-    pageInfo.textContent = `Page ${currentPage} / ${pdfDoc.numPages}`;
-    renderAllPages();
-  }).catch(function(err){ 
-    viewerContainer.innerHTML = "<p style='color:#f88'>PDF लोड करने में error — check URL और repo path सही है क्या</p>";
-    console.error(err);
-  });
-
-  async function renderAllPages() {
-    // clear
-    viewerContainer.innerHTML = "";
-    for (let p = 1; p <= pdfDoc.numPages; ++p) {
-      const page = await pdfDoc.getPage(p);
-      const viewport = page.getViewport({ scale });
-      const canvas = document.createElement('canvas');
-      canvas.className = 'pdf-page-canvas';
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      // wrap so CSS can control spacing
-      const wrap = document.createElement('div');
-      wrap.className = 'page-wrap';
-      wrap.dataset.pnum = p;
-      wrap.appendChild(canvas);
-      // watermark layer
-      const wm = document.createElement('div');
-      wm.className = 'watermark';
-      wm.textContent = "SAMPLE — © YOUR-NAME"; // बदल सकता है
-      wrap.appendChild(wm);
-
-      viewerContainer.appendChild(wrap);
-
-      const ctx = canvas.getContext('2d', { alpha: false });
-      const renderContext = { canvasContext: ctx, viewport: viewport };
-      await page.render(renderContext).promise;
-    }
-    goToPage(currentPage);
-    pageInfo.textContent = `Page ${currentPage} / ${pdfDoc.numPages}`;
-  }
-
-  function goToPage(n) {
-    currentPage = Math.min(Math.max(1, n), pdfDoc.numPages);
-    // scroll into view
-    const target = viewerContainer.querySelector(`.page-wrap[data-pnum="${currentPage}"]`);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    pageInfo.textContent = `Page ${currentPage} / ${pdfDoc.numPages}`;
-  }
-
-  prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
-  nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
-  zoomSel.addEventListener('change', async (e) => {
-    scale = parseFloat(e.target.value);
-    // re-render pages at new scale
-    const current = currentPage;
-    await renderAllPages();
-    goToPage(current);
-  });
-
-  // prevent drag
-  document.addEventListener('dragstart', e => e.preventDefault());
-
-  </script>
-
-  <style>
-  /* style.css content (inlined for simplicity) */
-  :root{ --bg:#0b1220; --card:#0f1724; --muted:#cbd5e1; }
-  body{ margin:0; font-family:Inter,system-ui,Arial;color:var(--muted); background:linear-gradient(180deg,#081029 0%, #06101b 100%); min-height:100vh;}
-  #topbar{ display:flex; justify-content:space-between; align-items:center; padding:12px 16px; background:rgba(255,255,255,0.02); border-bottom:1px solid rgba(255,255,255,0.03);}
-  #topbar h1{ margin:0; font-size:16px;}
-  #controls{ display:flex; gap:8px; align-items:center;}
-  button{ padding:6px 10px; background:#0b63ff33; border:1px solid rgba(255,255,255,0.04); color:var(--muted); border-radius:6px; cursor:pointer;}
-  #viewerContainer{ padding:20px; display:flex; flex-direction:column; align-items:center; gap:18px; }
-  .page-wrap{ position:relative; box-shadow:0 8px 30px rgba(2,6,23,0.7); border-radius:6px; overflow:hidden; background:#fff; }
-  .page-wrap canvas{ display:block; max-width:calc(100vw - 80px); height:auto; }
-  .watermark{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; font-size:28px; opacity:0.07; transform:rotate(-20deg); color:#000; font-weight:700; }
-  #anti-save-overlay{ position:fixed; inset:0; pointer-events:none; } /* can make partial pointer-events to block direct png save, but kept none to not break UX */
-  </style>
+  <footer>© 2025 My PDF Viewer | Built with ❤️</footer>
 </body>
 </html>
