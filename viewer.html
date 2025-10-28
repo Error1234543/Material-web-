@@ -1,77 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Viewer</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PDF Viewer | View Only</title>
+
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js"></script>
+
 <style>
-body,html {margin:0;padding:0;height:100%;background:#0a192f;color:#e6f1ff;display:flex;flex-direction:column;font-family:"Poppins",sans-serif;}
-header{background:#112240;padding:10px;text-align:center;}
-#controls {display:flex;justify-content:center;align-items:center;gap:10px;padding:5px;}
-#pdf-container {flex:1; overflow:auto; display:flex; justify-content:center; align-items:flex-start; padding:10px;}
-canvas{margin-bottom:10px; background:#fff; border-radius:5px;}
-button{padding:5px 10px;border:none;border-radius:5px;background:#64ffda;color:#0a192f;font-weight:bold; cursor:pointer;}
-button:hover{opacity:0.8;}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #000814;
+  color: #fff;
+  overflow: hidden;
+}
+#toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #001d3d;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  box-shadow: 0 0 10px #000;
+}
+#toolbar h1 {
+  font-size: 18px;
+  margin: 0;
+  color: #ffd60a;
+}
+button, select {
+  background: #003566;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+#viewerContainer {
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto;
+  text-align: center;
+  background: radial-gradient(circle at top, #000814, #001d3d);
+  padding: 20px;
+}
+canvas {
+  background: white;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  font-size: 40px;
+  color: rgba(0,0,0,0.1);
+  font-weight: 800;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
 
-<header>📖 PDF Viewer (Zoom & Navigation)</header>
-<div id="controls">
-  <button id="prev">⬅ Prev</button>
-  <button id="next">Next ➡</button>
-  <span>Page: <span id="page_num">1</span> / <span id="page_count">1</span></span>
-  <button id="zoom_in">🔍+</button>
-  <button id="zoom_out">🔍-</button>
+<div id="toolbar">
+  <h1>📄 PDF Viewer</h1>
+  <div>
+    <button id="prev">⬅️ Prev</button>
+    <span id="page-num">1 / ?</span>
+    <button id="next">Next ➡️</button>
+    <select id="zoom">
+      <option value="1">100%</option>
+      <option value="1.25">125%</option>
+      <option value="1.5">150%</option>
+      <option value="2">200%</option>
+    </select>
+  </div>
 </div>
-<div id="pdf-container"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.16.105/pdf.min.js"></script>
+<div id="viewerContainer"></div>
+<div class="watermark">VIEW ONLY</div>
+
 <script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("selectstart", e => e.preventDefault());
+
 const urlParams = new URLSearchParams(window.location.search);
-const file = urlParams.get('file');
-if(!file){document.getElementById('pdf-container').innerHTML='No PDF file specified';}
+const filename = urlParams.get("file");
+if (!filename) {
+  document.body.innerHTML = "<h2 style='text-align:center;margin-top:100px;color:#f55;'>❌ PDF file not found!</h2>";
+  throw new Error("No PDF file parameter.");
+}
 
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.16.105/pdf.worker.min.js';
+// Replace YOUR_USERNAME & REPO
+const PDF_URL = `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/pdfs/${filename}`;
 
-let pdfDoc=null, pageNum=1, scale=1.5;
-const container=document.getElementById('pdf-container');
-const page_num_el=document.getElementById('page_num');
-const page_count_el=document.getElementById('page_count');
+const viewer = document.getElementById("viewerContainer");
+let pdfDoc = null, currentPage = 1, scale = 1;
 
-function renderPage(num){
-  pdfDoc.getPage(num).then(page=>{
-    const viewport=page.getViewport({scale});
-    container.innerHTML='';
-    const canvas=document.createElement('canvas');
-    const ctx=canvas.getContext('2d');
-    canvas.height=viewport.height;
-    canvas.width=viewport.width;
-    container.appendChild(canvas);
-    page.render({canvasContext:ctx,viewport:viewport});
-    page_num_el.textContent=num;
+pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
+  pdfDoc = doc;
+  document.getElementById("page-num").textContent = `${currentPage} / ${pdfDoc.numPages}`;
+  renderPage();
+});
+
+function renderPage() {
+  pdfDoc.getPage(currentPage).then(page => {
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    viewer.innerHTML = "";
+    viewer.appendChild(canvas);
+    page.render({ canvasContext: context, viewport: viewport });
+    document.getElementById("page-num").textContent = `${currentPage} / ${pdfDoc.numPages}`;
   });
 }
 
-pdfjsLib.getDocument(file).promise.then(pdf=>{
-  pdfDoc=pdf;
-  page_count_el.textContent=pdfDoc.numPages;
-  renderPage(pageNum);
-});
-
-document.getElementById('prev').addEventListener('click',()=>{
-  if(pageNum<=1)return;
-  pageNum--;
-  renderPage(pageNum);
-});
-document.getElementById('next').addEventListener('click',()=>{
-  if(pageNum>=pdfDoc.numPages)return;
-  pageNum++;
-  renderPage(pageNum);
-});
-document.getElementById('zoom_in').addEventListener('click',()=>{scale+=0.25; renderPage(pageNum);});
-document.getElementById('zoom_out').addEventListener('click',()=>{scale=Math.max(0.5,scale-0.25); renderPage(pageNum);});
+document.getElementById("prev").onclick = () => {
+  if (currentPage <= 1) return;
+  currentPage--;
+  renderPage();
+};
+document.getElementById("next").onclick = () => {
+  if (currentPage >= pdfDoc.numPages) return;
+  currentPage++;
+  renderPage();
+};
+document.getElementById("zoom").onchange = e => {
+  scale = parseFloat(e.target.value);
+  renderPage();
+};
 </script>
-
 </body>
 </html>
