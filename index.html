@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,23 +16,37 @@
     h1 {
       color: #00bfff;
       margin-bottom: 30px;
+      text-shadow: 0 0 15px #00bfff77;
+    }
+    .pdf-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
     }
     .pdf-links a {
       display: block;
-      margin: 15px auto;
-      width: 250px;
+      width: 280px;
       background: #0a192f;
       color: #00ffea;
-      padding: 12px;
-      border-radius: 12px;
+      padding: 14px 18px;
+      border-radius: 14px;
       text-decoration: none;
-      transition: 0.3s;
-      box-shadow: 0 0 10px #00bfff55;
+      transition: 0.25s;
+      box-shadow: 0 0 12px #00bfff55;
+      font-weight: 600;
     }
     .pdf-links a:hover {
       background: #00bfff;
       color: #000;
-      box-shadow: 0 0 20px #00ffff;
+      box-shadow: 0 0 25px #00ffff;
+      transform: translateY(-2px);
+    }
+    footer {
+      margin-top: 40px;
+      color: #9bdcff;
+      font-size: 0.9rem;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -41,8 +54,15 @@
   <h1>📚 PDF Library</h1>
 
   <div class="pdf-links">
-    <a href="viewer.html?file=chemistry_notes.pdf">📘 Test 1</a>
-    <a href="viewer.html?file=test2.pdf">🧪 Test 2</a>
+    <!-- 🔹 Add your materials below -->
+    <a href="https://uploda.sh/aJRXVNDZVpmQ" target="_blank">📘 Material 1</a>
+    <a href="https://uploda.sh/abcd1234xyz" target="_blank">🧪 Material 2</a>
+
+    <!-- 👇 Example for adding more -->
+    <!-- <a href="https://uploda.sh/YOUR_NEW_LINK" target="_blank">📕 Material 3</a> -->
+    <!-- <a href="https://uploda.sh/YOUR_NEW_LINK" target="_blank">📗 Material 4</a> -->
   </div>
+
+  <footer>✨ Tap any button to open or download your study materials</footer>
 </body>
 </html>
