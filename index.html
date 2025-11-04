@@ -48,21 +48,105 @@
       font-size: 0.9rem;
       opacity: 0.8;
     }
+
+    /* ===== Popup Styling ===== */
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+      z-index: 999;
+    }
+    .popup.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .popup-content {
+      background: #0a192f;
+      padding: 25px 35px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px #00bfff88;
+      max-width: 320px;
+      text-align: center;
+      animation: pop 0.4s ease;
+    }
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .popup h2 {
+      color: #00bfff;
+      margin-bottom: 12px;
+    }
+    .popup p {
+      color: #c2f8ff;
+      margin-bottom: 18px;
+      font-size: 0.95rem;
+    }
+    .popup a.join-btn {
+      background: #00bfff;
+      color: #000;
+      padding: 10px 22px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #00ffff88;
+    }
+    .popup a.join-btn:hover {
+      background: #00ffff;
+    }
+    .popup .close-btn {
+      margin-top: 12px;
+      display: inline-block;
+      color: #aaa;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .popup .close-btn:hover {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
   <h1>📚 PDF Library</h1>
 
   <div class="pdf-links">
-    <!-- 🔹 Add your materials below -->
     <a href="https://uploda.sh/aJRXVNDZVpmQ" target="_blank">📘 Material 1</a>
     <a href="https://uploda.sh/abcd1234xyz" target="_blank">🧪 Material 2</a>
-
-    <!-- 👇 Example for adding more -->
-    <!-- <a href="https://uploda.sh/YOUR_NEW_LINK" target="_blank">📕 Material 3</a> -->
-    <!-- <a href="https://uploda.sh/YOUR_NEW_LINK" target="_blank">📗 Material 4</a> -->
+    <!-- Add more links below -->
   </div>
 
   <footer>✨ Tap any button to open or download your study materials</footer>
+
+  <!-- ===== Telegram Join Popup ===== -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>📢 Join Our Telegram Channel</h2>
+      <p>Get latest study materials, updates & tests directly on Telegram!</p>
+      <a href="https://t.me/+NGUSfa7ns8c4OTll" target="_blank" class="join-btn">Join Now 🚀</a>
+      <div class="close-btn" onclick="closePopup()">❌ Close</div>
+    </div>
+  </div>
+
+  <script>
+    // Show popup automatically after 1.5 seconds
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("popup").classList.add("active");
+      }, 1500);
+    });
+
+    // Close popup
+    function closePopup() {
+      document.getElementById("popup").classList.remove("active");
+    }
+  </script>
 </body>
 </html>
