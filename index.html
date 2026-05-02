@@ -2,124 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>📘 PDF Library | Learn X Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LEARN X PRO | JEE NEET GUJ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at top, #001933, #000814);
-      color: #fff;
-      text-align: center;
-      margin: 0;
-      padding: 40px 15px;
-    }
-    h1 {
-      color: #00bfff;
-      margin-bottom: 25px;
-      text-shadow: 0 0 15px #00bfff77;
-    }
-    /* Style for the new buttons container */
-    .top-buttons {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-    /* Style for the new buttons */
-    .top-btn {
-      background: #00bfff;
-      color: #000;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
-      box-shadow: 0 0 15px #00ffff88;
-      font-size: 0.95rem;
-    }
-    .top-btn:hover {
-      background: #00ffff;
-      box-shadow: 0 0 25px #00ffff;
-    }
+    :root { --accent: #facc15; --accent-dark: #eab308; --dark: #0f172a; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: var(--dark); margin: 0; padding-bottom: 50px; }
+
+    /* NAVBAR */
+    .navbar { background: #fff; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 100; }
+    .logo { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .logo img { width: 40px; height: 40px; border-radius: 50%; }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn { background: var(--accent); color: #111; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.8rem; }
+
+    /* BANNER */
+    .banner { background: linear-gradient(135deg, #facc15, #f59e0b); color: #111; padding: 40px 5%; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 10px 25px rgba(250, 204, 21, 0.3); margin-bottom: 30px; }
     
-    .folder {
-      background: #0a192f;
-      margin: 15px auto;
-      border-radius: 12px;
-      max-width: 400px;
-      box-shadow: 0 0 12px #00bfff33;
-      overflow: hidden;
-      transition: 0.3s;
-    }
-    .folder-header {
-      cursor: pointer;
-      padding: 15px;
-      background: #001d3d;
-      color: #00ffff;
-      font-weight: 600;
-      text-align: left;
-      border-bottom: 1px solid #00bfff44;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .folder-header:hover {
-      background: #002a52;
-    }
-    .arrow {
-      transition: transform 0.3s;
-    }
-    .folder-content {
-      display: none;
-      padding: 12px 20px;
-      text-align: left;
-      animation: fadeIn 0.4s ease;
-    }
-    .folder-content a {
-      display: block;
-      background: #0d243f;
-      color: #00ffea;
-      text-decoration: none;
-      padding: 10px 12px;
-      margin: 8px 0;
-      border-radius: 10px;
-      transition: 0.25s;
-      box-shadow: 0 0 10px #00bfff33;
-    }
-    .folder-content a:hover {
-      background: #00bfff;
-      color: #000;
-      box-shadow: 0 0 20px #00ffff;
-    }
-    .open .folder-content {
-      display: block;
-    }
-    .open .arrow {
-      transform: rotate(90deg);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    footer {
-      margin-top: 40px;
-      color: #9bdcff;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-
-    /* Popup styles removed */
+    /* FOLDERS */
+    .container { max-width: 600px; margin: auto; padding: 0 15px; }
+    .folder { background: white; margin-bottom: 15px; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .folder-header { cursor: pointer; padding: 18px 20px; display: flex; justify-content: space-between; font-weight: 700; align-items: center; }
+    .arrow { transition: 0.3s; }
+    .folder-content { display: none; padding: 0 20px 20px; border-top: 1px solid #f1f5f9; }
+    .folder.open .folder-content { display: block; }
+    .folder.open .arrow { transform: rotate(90deg); }
+    
+    .folder-content a { display: block; padding: 12px; margin-top: 8px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #334155; font-size: 0.85rem; font-weight: 500; transition: 0.2s; }
+    .folder-content a:hover { background: var(--accent); color: #111; }
+    
+    footer { text-align: center; margin-top: 30px; color: #64748b; font-size: 0.8rem; }
   </style>
 </head>
 <body>
-  
-  <div class="top-buttons">
-    <a href="https://t.me/+NGUSfa7ns8c4OTll" target="_blank" class="top-btn">Join Channel 🚀</a>
-    <a href="https://t.me/xdsonic" target="_blank" class="top-btn">Contact Owners ☎️</a>
-  </div>
-  <h1>📚 PDF Library</h1>
 
+<nav class="navbar">
+  <div class="logo">
+    <img src="https://i.ibb.co/Q152gXX/x.jpg"> 𝙅𝙀𝙀 𝙉𝙀𝙀𝙏 𝙂𝙐𝙅
+  </div>
+  <div class="nav-btns">
+    <a href="https://t.me/+NGUSfa7ns8c4OTll" class="btn">𝙏𝙀𝙇𝙄𝙂𝙍𝘼𝙈</a>
+    <a href="https://t.me/Batmandmbot" class="btn">𝘾𝙊𝙉𝙏𝘼𝘾𝙏</a>
+  </div>
+</nav>
+
+<section class="banner">
+  <h1>Master JEE & NEET 2026</h1>
+  <p>Premium Study Portal for Toppers.</p>
+</section>
+
+<div class="container">
+  
   <div class="folder">
     <div class="folder-header" onclick="toggleFolder(this)">
       📚BOOKS <span class="arrow">▶</span>
@@ -275,118 +208,3 @@
     <a href="https://uploda.sh/82EGYrnaqz58" target="_blank">12th_Physics_Devsatya_Paperset_2025_GM.pdf</a><br>
 
     <a href="https://uploda.sh/lW0TwxmfdADn" target="_blank">12th_Physics_Liberty_Paperset_2025_GM_1.pdf</a><br>
-
-    <a href="https://uploda.sh/a9TS3TzKztVR" target="_blank">12th_Physics_Liberty_Paperset_2025_GM_1.pdf</a><br>
-
-    <a href="https://uploda.sh/JyPfe2Lvplf8" target="_blank">12th_Chemistry_Devsatya_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/v9p2Nn4uwdJT" target="_blank">12th Biology Liberty Paperset - 2025 (GM).pdf</a><br>
-
-    <a href="https://uploda.sh/ROfWz4bP8yVB" target="_blank">devstya paper set 2025.pdf</a><br>
-
-    <a href="https://uploda.sh/KqPeDYoAtR6U" target="_blank">12th_Physics_Kumar_Board_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/Lzv9b2SdPpiI" target="_blank">12th_Chemistry_Devsatya_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/nH5jTDtyT3MG" target="_blank">12th_Chemistry_Kumar_Board_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/RWrf9m1WMYt9" target="_blank">12th_Physics_Devsatya_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/8F3H12tI4OCm" target="_blank">12th_Chemistry_Liberty_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/Y7UGiyB7wxnn" target="_blank">12th_Biology_Kumar_Board_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/KwK19JLEQuDA" target="_blank">12th_Biology_Kumar_Board_Paperset_2025_GM.pdf</a><br>
-
-    <a href="https://uploda.sh/COqHirjPNt9v" target="_blank">devstya paper set 2025.pdf</a><br>
-
-<a href="https://uploda.sh/JK4gY19wfm4L" target="_blank">Kumar 5 Star Chemistry Guj 2022.pdf</a>
-
-<a href="https://uploda.sh/kPeuEkLsq6nJ" target="_blank">English Vraj Prakashan - 2019 (Part B).pdf</a>
-
-<a href="https://uploda.sh/KTYZvIGOrRCg" target="_blank">ENGLISH Vraj prakashan paper set 2022.pdf</a>
-
-<a href="https://uploda.sh/E3qLMr8GRolf" target="_blank">Kumar paper set maths 2022.pdf</a>
-
-<a href="https://uploda.sh/n1tMz3s6a9b9" target="_blank">Computer marvel sona Prakashan.pdf</a>
-
-<a href="https://uploda.sh/jg0hjfM0cJOh" target="_blank">12th Chemistry Kumar 5 Star (Eng) - 2022.pdf</a>
-
-<a href="https://uploda.sh/RpaMmn0EasgO" target="_blank">class 11 chapter 2 kumar pyq1.pdf</a>
-
-<a href="https://uploda.sh/gInSS3mrJPKk" target="_blank">Vraj Prakashan 2022 Physics.pdf</a>
-
-<a href="https://uploda.sh/v0IMILmDGQBM" target="_blank">Vraj Prakashan Papers Biology 2020.pdf</a>
-
-<a href="https://uploda.sh/altZ5NJr0E3R" target="_blank">Vraj Prakashan Papers English 2020.pdf</a>
-
-<a href="https://uploda.sh/k05YCMvgumYF" target="_blank">Vraj Prakashan Papers Physics 2020.pdf</a>
-
-<a href="https://uploda.sh/ICmoJmTIrNbn" target="_blank">English Vraj Prakashan - 2020.pdf</a>
-
-<a href="https://uploda.sh/wJTsuvlf38ah" target="_blank">English Vraj Prakashan - 2019 (Part A) (MCQs).pdf</a>
-
-<a href="https://uploda.sh/fwc1zQS1esXM" target="_blank">Kumar 5 Star - Chemistry Paper (2021).pdf</a>
-
-<a href="https://uploda.sh/MyoYtkkzvS4h" target="_blank">Kumar Prakashan Maths (E.M).pdf</a>
-
-<a href="https://uploda.sh/AcVfHPi4B8gW" target="_blank">Chemistry kumar paper set 2022.pdf</a>
-
-<a href="https://uploda.sh/SQdBrjwUWcPW" target="_blank">Vraj Prakashan Papers Chemistry 2020.pdf</a>
-
-<a href="https://uploda.sh/QmYvLJc8j85V" target="_blank">Kumar gujcet physics paper set.pdf</a>
-
-<a href="https://uploda.sh/8nrjA105ctpM" target="_blank">Kumar Paperset - Chemistry 2021.pdf</a>
-
-<a href="https://uploda.sh/AromVDNGPeYO" target="_blank">Kumar Paperset - Physics 2021.pdf</a>
-
-<a href="https://uploda.sh/C2wlOD9G0CtN" target="_blank">11th Biology Kumar MCQs.pdf</a>
-
-<a href="https://uploda.sh/W3ZnhlHml6NZ" target="_blank">KUMARSAMPLEPAPER-03_D02-Jan-2022.pdf</a>
-
-<a href="https://uploda.sh/fVxKzNeXRCEh" target="_blank">KUMARSAMPLEPAPER-01_D02-Jan-2022.pdf</a>
-
-<a href="https://uploda.sh/3l1wAl9163qg" target="_blank">Physics Kumar Paperset 2022.pdf</a>
-
-<a href="https://uploda.sh/WU4bSCS88sMC" target="_blank">Kumar Paperset 2020 - Biology.pdf</a>
-
-<a href="https://uploda.sh/A56u943CSdL4" target="_blank">KUMARSAMPLEPAPER-04_D02-Jan-2022.pdf</a>
-
-<a href="https://uploda.sh/ugMJzdwK8WOb" target="_blank">KUMARSAMPLEPAPER-02_D02-Jan-2022.pdf</a>
-
-<a href="https://uploda.sh/zzADysT4C2Kw" target="_blank">KUMARSAMPLEPAPER-05_D02-Jan-2022.pdf</a>
-
-<a href="https://uploda.sh/vd3kwUILGD70" target="_blank">PHY(FULLDARPAN)MCQ.pdf</a>
-
-<a href="https://uploda.sh/DkSUUANVJhMS" target="_blank">Std 12 computer darpan.pdf</a>
-
-<a href="https://uploda.sh/d6M1XAi6EXFD" target="_blank">NEET Physics Darpan+ [Volume 2].pdf</a>
-
-<a href="https://uploda.sh/CBFnml4eFG54" target="_blank">Std 12 Computer Darpan Kumar.pdf</a>
-
-<a href="https://uploda.sh/P8i2pqtd4r3c" target="_blank">Chemistry JEE-NEET MCQ Kumar Darpan 11th.pdf</a>
-
-<a href="https://uploda.sh/zjjdcEfAewOP" target="_blank">NEET Physics Darpan+ [Volume 1].pdf</a>
-
-<a href="https://uploda.sh/jxEZT2HMl1Sg" target="_blank">Vraj Prakashan Papers Chemistry 2020.pdf</a>
-
-<a href="https://uploda.sh/1MQSaaWWTO42" target="_blank">Vraj Prakashan Papers Biology 2020.pdf</a>
-
-<a href="https://uploda.sh/Uc9fqJU9mVUp" target="_blank">English Vraj Prakashan - 2019 (Part A) (MCQs).pdf</a>
-
-<a href="https://uploda.sh/qI0iqMHeahhX" target="_blank">Computer marvel sona Prakashan.pdf</a>
-
-<a href="https://uploda.sh/j0r0NA1pNzyF" target="_blank">English Vraj Prakashan - 2020.pdf</a>
-</div>
-  <footer>✨ Tap folder to view study materials</footer>
-
-  <script>
-    // Folder open/close
-    function toggleFolder(el) {
-      el.parentElement.classList.toggle("open");
-    }
-
-    // Removed the code for the popup
-  </script>
-</body>
-</html>
